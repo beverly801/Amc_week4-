@@ -1,0 +1,136 @@
+import React, { useState } from 'react';
+import { View, FlatList, StyleSheet, TouchableOpacity, Text, StatusBar } from 'react-native';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+
+// Adding unique colors to each item in the DATA array
+const DATA = [
+  {
+    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+    title: 'Morning Routine',
+    color: '#f9c2ff',
+  },
+  {
+    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+    title: 'Taking a bath',
+    color: '#ffb6c1',
+  },
+  {
+    id: '58694a0f-3da1-471f-bd96-145571e29d72',
+    title: 'Check my emails',
+    color: '#add8e6',
+  },
+  {
+    id: '4ac68afc-c605-48d3-a4f8-fbd91aa97f64',
+    title: 'Prepare for school',
+    color: '#98fb98',
+  },
+  {
+    id: '5ac68afc-c605-48d3-a4f8-fbd91aa97f65',
+    title: 'Read books',
+    color: '#f0e68c',
+  },
+  {
+    id: '6ac68afc-c605-48d3-a4f8-fbd91aa97f66',
+    title: 'Afternoon Routine',
+    color: '#ffeb3b',
+  },
+  {
+    id: '7ac68afc-c605-48d3-a4f8-fbd91aa97f67',
+    title: 'Lunch',
+    color: '#ff9800',
+  },
+  {
+    id: '8ac68afc-c605-48d3-a4f8-fbd91aa97f68',
+    title: 'Drink Water',
+    color: '#4caf50',
+  },
+  {
+    id: '9ac68afc-c605-48d3-a4f8-fbd91aa97f69',
+    title: 'Stretch',
+    color: '#8bc34a',
+  },
+  {
+    id: '10ac68afc-c605-48d3-a4f8-fbd91aa97f70',
+    title: 'Evening Routine',
+    color: '#00bcd4',
+  },
+  {
+    id: '11ac68afc-c605-48d3-a4f8-fbd91aa97f71',
+    title: 'Meditation',
+    color: '#9c27b0',
+  },
+  {
+    id: '12ac68afc-c605-48d3-a4f8-fbd91aa97f72',
+    title: 'Warm bath',
+    color: '#673ab7',
+  },
+  {
+    id: '13ac68afc-c605-48d3-a4f8-fbd91aa97f73',
+    title: 'Listen to music',
+    color: '#ff5722',
+  },
+  {
+    id: '14ac68afc-c605-48d3-a4f8-fbd91aa97f74',
+    title: 'Gratitude journal',
+    color: '#607d8b',
+  },
+];
+
+// Item component with selectable functionality
+type ItemProps = { title: string, color: string, onPress: () => void, isPressed: boolean };
+const Item = ({ title, color, onPress, isPressed }: ItemProps) => (
+  <TouchableOpacity
+    style={[styles.item, { backgroundColor: isPressed ? '#d18aff' : color }]} // Change to a different color when pressed
+    onPress={onPress}
+  >
+    <Text style={styles.title}>{title}</Text>
+  </TouchableOpacity>
+);
+
+// Main App component
+const App = () => {
+  const [pressedItemId, setPressedItemId] = useState<string | null>(null);
+
+  const handlePress = (id: string, title: string) => {
+    setPressedItemId(id); // Update the pressed item
+    console.log(`${title} pressed!`);
+  };
+
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          data={DATA}
+          renderItem={({ item }) => (
+            <Item
+              title={item.title}
+              color={item.color}
+              onPress={() => handlePress(item.id, item.title)}
+              isPressed={item.id === pressedItemId} // Compare with the pressed item ID
+            />
+          )}
+          keyExtractor={item => item.id}
+        />
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
+};
+
+// Styles for the app
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 5,
+  },
+  title: {
+    fontSize: 20,
+  },
+});
+
+export default App;
